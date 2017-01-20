@@ -16,7 +16,9 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private RecyclerView recyclerView;
+    private static final String ITEM_TEXT = "Item ";
+    private static final int ITEMS_NUMBER = 100;
+    private static final int COLUMNS_NUMBER = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +28,15 @@ public class MainActivity extends Activity {
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         List<String> items = new ArrayList<>();
-        for(int i = 1; i <= 90; i++) {
-            items.add("Item " + i);
+        for(int i = 0; i < ITEMS_NUMBER; i++) {
+            items.add(ITEM_TEXT + (i + 1));
         }
 
-        recyclerView.setLayoutManager(new ShiftedGridLayoutManager(4, 64));
+        recyclerView.setLayoutManager(new ShiftedGridLayoutManager(COLUMNS_NUMBER,
+                getResources().getDimensionPixelSize(R.dimen.offset_size)));
         recyclerView.setAdapter(new MainAdapter(items));
     }
 }
