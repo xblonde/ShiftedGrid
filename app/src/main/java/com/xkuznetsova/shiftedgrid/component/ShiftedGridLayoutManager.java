@@ -22,7 +22,7 @@ import android.view.ViewGroup;
  */
 public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
 
-    public static final int NO_HEADER = -1;
+    private static final int NO_HEADER = -1;
 
     /* Scroll directions */
     private static final int DIRECTION_NONE = 0;
@@ -53,9 +53,6 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
     /* Footer flag */
     private boolean footerExists;
 
-    /* For prompts */
-    private int measuredChildWidth;
-
     private boolean allItemsFitInScreen;
     private int totalItemsCount = -1;
 
@@ -66,13 +63,6 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
     public ShiftedGridLayoutManager(int columnCount, int offsetInPixels) {
         this.columnCount = columnCount;
         this.offsetInPixels = offsetInPixels;
-    }
-
-    /**
-     * @return width of child view without decorations
-     */
-    public int getChildWidth() {
-        return measuredChildWidth;
     }
 
     @Override
@@ -101,7 +91,7 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        decoratedChildWidth = getHorizontalSpace() / columnCount; // do this here because in onMeaure it doesn't work correctly
+        decoratedChildWidth = getHorizontalSpaceForItemsRow() / columnCount; // do this here because in onMeaure it doesn't work correctly
 
         // Scrap all views if dataset is empty
         if (state.getItemCount() == 0) {
@@ -132,7 +122,6 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
                 measureChildWithMargins(scrap, 0, 0);
                 decoratedChildHeight = getDecoratedMeasuredHeight(scrap);
                 // for prompt
-                measuredChildWidth = scrap.getMeasuredWidth();
                 detachAndScrapView(scrap, recycler);
             }
 
@@ -333,20 +322,6 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
         return false;
     }
 
-    /**
-     * Check if all items from adapter's dataset fit in the screen (visible)
-     */
-    public boolean allItemsFitInScreen() {
-        if (totalItemsCount == getItemCount()) {
-            return allItemsFitInScreen;
-        }
-
-        totalItemsCount = getItemCount();
-        allItemsFitInScreen = getVerticalSpace() > countSpaceForTotalDataset();
-
-        return allItemsFitInScreen;
-    }
-
     private void fillGrid(int direction, RecyclerView.Recycler recycler, RecyclerView.State state, int dy) {
         fillGrid(direction, 0, recycler, state, dy);
     }
@@ -539,7 +514,7 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
 
         measureChildWithMargins(view, 0, 0);
         layoutDecorated(view, leftOffset, topOffset,
-                getHorizontalSpace(),
+                getHorizontalSpaceForHeaderOrFooter(),
                 topOffset + decoratedHeaderHeight);
     }
 
@@ -553,7 +528,7 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
 
         measureChildWithMargins(view, 0, 0);
         layoutDecorated(view, leftOffset, topOffset,
-                getHorizontalSpace(),
+                getHorizontalSpaceForHeaderOrFooter(),
                 topOffset + decoratedFooterHeight);
     }
 
@@ -649,8 +624,12 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
         return getHeight() - getPaddingTop() - getPaddingBottom();
     }
 
-    private int getHorizontalSpace() {
-        return getWidth() - getPaddingLeft() - getPaddingRight() - offsetInPixels;
+    private int getHorizontalSpaceForItemsRow() {
+        return getHorizontalSpaceForHeaderOrFooter() - offsetInPixels;
+    }
+
+    private int getHorizontalSpaceForHeaderOrFooter() {
+        return getWidth() - getPaddingLeft() - getPaddingRight();
     }
 
     private int countPositionOffset(int direction, int startPosition) {
