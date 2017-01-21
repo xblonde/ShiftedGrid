@@ -3,7 +3,7 @@
 ShiftedGrid is an open source implementation of [RecyclerView.LayoutManager](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.LayoutManager.html).
 It arranges elements in two-dimensional grid. The rows can be shifted to each other. The headers are supported.
 
-https://habrastorage.org/files/662/144/fb0/662144fb016c48b591d66978e958365f.png
+![ShiftedGrid screenshot](https://habrastorage.org/files/662/144/fb0/662144fb016c48b591d66978e958365f.png)
 
 ## Authors and License
 Copyright (c) 2016-2017 Xenia Kuznetsova
