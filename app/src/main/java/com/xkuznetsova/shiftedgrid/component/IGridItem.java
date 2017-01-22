@@ -10,4 +10,5 @@ public interface IGridItem extends IGridElement {
 
     int getHeaderIndex();
     void setHeaderIndex(int headerIndex);
+
 }

@@ -53,9 +53,6 @@ public class ShiftedGridLayoutManager extends RecyclerView.LayoutManager {
     /* Footer flag */
     private boolean footerExists;
 
-    private boolean allItemsFitInScreen;
-    private int totalItemsCount = -1;
-
     /**
      * @param columnCount - number of columns in grid
      * @param offsetInPixels - size of additional left offset

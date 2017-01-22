@@ -82,4 +82,5 @@ class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return 0;
     }
+
 }

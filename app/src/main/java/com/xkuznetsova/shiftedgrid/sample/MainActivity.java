@@ -48,4 +48,5 @@ public class MainActivity extends Activity {
                 getResources().getDimensionPixelSize(R.dimen.offset_size)));
         recyclerView.setAdapter(new MainAdapter(items, headerPositions));
     }
+
 }

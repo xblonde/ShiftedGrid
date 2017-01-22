@@ -59,4 +59,5 @@ public class ItemView extends FrameLayout implements IGridItem {
     public void setItemNameText(String nameText) {
         textView.setText(nameText);
     }
+
 }
